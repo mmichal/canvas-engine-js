@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+
+   <!-- <script src="./src/utils.js"></script>
+    <script src="./src/Timer.js"></script>
+    <script src="./src/TimerError.js"></script>
+    <script src="./src/CanvasObject.js"></script>
+    <script src="./src/CanvasObjectError.js"></script>
+    <script src="./src/CanvasTask.js"></script>
+    <script src="./src/KeyListener.js"></script>
+    <script src="./src/Canvas.js"></script> -->
+
+    <script src="canvas.min.js"></script>
+    <script src="TestController.js"></script>
+    <script src="TestObject.js"></script>
+    <script type="text/javascript">
+      function main() {
+        canvas = new Canvas(document.getElementById("game_canvas"));
+        controllers = new TestController(canvas);
+
+      }
+
+    </script>
+  </head>
+  <body style="background-color: #eee" onload="main()">
+    <canvas id="game_canvas" width="320" height="240"></canvas>
+  </body>
+</html>
