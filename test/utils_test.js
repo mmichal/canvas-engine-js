@@ -52,7 +52,4 @@ test("utils - extend", function () {
   );
 });
 
-test("utils - svg2Model", function () {
-
-});
 

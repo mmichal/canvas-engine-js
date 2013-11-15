@@ -7,11 +7,73 @@ function Canvas(canvas) {
   this.timer = null;
 
   this.tasks = [
-    new CanvasTask({ action: function (canvas, $this) { canvas.draw(); } })
+    new CanvasTask({ action: function (canvas) { canvas.draw(); } })
   ];
 
   this.objects = [];
+
+  this.eventDispatcher = new EventDispatcher(this);
+  this.inputListener = new InputListener(this.canvas);
+
+  var $this = this;
+
+  this.inputListener.keyDownSignal.connect(
+    this,
+    function (keyCode) {
+      $this.eventDispatcher.dispatch(new KeyDownEvent({ keyCode: keyCode }));
+    }
+  );
+
+  this.inputListener.keyUpSignal.connect(
+    this,
+    function (keyCode) {
+      $this.eventDispatcher.dispatch(new KeyUpEvent({ keyCode: keyCode }));
+    }
+  );
+
+  this.inputListener.keyPressSignal.connect(
+    this,
+    function (keyCode) {
+      $this.eventDispatcher.dispatch(new KeyPressEvent({ keyCode: keyCode }));
+    }
+  );
+
+  this.inputListener.mouseDownSignal.connect(
+    this,
+    function (x, y) {
+      $this.eventDispatcher.dispatch(new MouseDownEvent({ x: x, y: y }));
+    }
+  );
+
+  this.inputListener.mouseUpSignal.connect(
+    this,
+    function (x, y) {
+      $this.eventDispatcher.dispatch(new MouseUpEvent({ x: x, y: y }));
+    }
+  );
+
+  this.inputListener.mouseClickSignal.connect(
+    this,
+    function (x, y) {
+      $this.eventDispatcher.dispatch(new MouseClickEvent({ x: x, y: y }));
+    }
+  );
+
+  this.inputListener.mouseDoubleClickSignal.connect(
+    this,
+    function (x, y) {
+      $this.eventDispatcher.dispatch(new MouseDoubleClickEvent({ x: x, y: y }));
+    }
+  );
+
+  this.inputListener.mouseMoveSignal.connect(
+    this,
+    function (x, y) {
+      $this.eventDispatcher.dispatch(new MouseMoveEvent({ x: x, y: y }));
+    }
+  );
 }
+
 Canvas.prototype = new CanvasObject();
 
 Canvas.prototype.start = function () {
@@ -27,7 +89,7 @@ Canvas.prototype.stop = function () {
 };
 
 Canvas.prototype.draw = function () {
-  this.context.clearRect(0,0,this.canvas.width, this.canvas.height);
+  this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
   for (var objectsKey = 0; objectsKey < this.objects.length; objectsKey++) {
     this.context.save();
@@ -58,7 +120,7 @@ Canvas.prototype.setStyle = function (style) {
     }
 
     if (style.font) {
-      this.context.font = "32pt Arial";
+      this.context.font = style.font;
     }
   }
 };
@@ -111,101 +173,6 @@ Canvas.prototype.transform = function (transformation) {
         transformation.translation.y
       );
     }
-  }
-};
-
-Canvas.prototype.render = function(model) {
-  switch (model.type) {
-    case 'element':
-      this.context.save();
-      this.position(model);
-      this.transform(model.transformation)
-      for (var key in model.content) {
-        this.render(model.content[key]);
-      }
-      this.context.restore();
-      break;
-
-    case 'rectangle':
-      this.context.save();
-      this.position(model);
-      this.transform(model.transformation);
-      this.setStyle(model.style);
-      this.context.beginPath();
-      this.context.moveTo(model.x,model.y);
-      this.context.lineTo(model.x + model.width, model.y);
-      this.context.lineTo(model.x + model.width, model.y+model.height);
-      this.context.lineTo(model.x, model.y + model.height);
-      this.context.closePath();
-      this.display(model.style);
-      this.context.restore();
-      break;
-
-    case 'text':
-      this.context.save();
-      this.position(model);
-      this.transform(model.transformation);
-      this.setStyle(model.style);
-      this.context.textBaseline = 'bottom left';
-
-      if (model.style.fill) {
-        this.context.fillText(model.text, model.x, model.y);
-      }
-      if (model.style.stroke) {
-        this.context.strokeText(model.text, model.x, model.y);
-      }
-      this.context.restore();
-      break;
-
-    case 'circle':
-      this.context.save();
-      this.position(model);
-      this.transform(model.transformation);
-      this.setStyle(model.style);
-      this.context.beginPath();
-      this.context.arc(
-        model.x + model.radius,
-        model.y + model.radius,
-        model.radius,
-        0,
-        Math.PI*2,
-        false
-      );
-
-      this.context.closePath();
-      this.display(model.style);
-      this.context.restore();
-      break;
-
-    case 'move':
-      this.context.moveTo(model.x, model.y);
-      break;
-
-    case 'close':
-      this.context.closePath();
-      break;
-
-    case 'line' :
-      this.context.lineTo(model.x, model.y);
-      break;
-
-    case 'path':
-      this.context.save();
-      this.position(model);
-      this.transform(model.transformation);
-      this.setStyle(model.style);
-      this.context.beginPath();
-
-      for (var key in model.content) {
-        this.render(model.content[key]);
-      }
-
-      this.display(model.style);
-      this.context.restore();
-      break;
-
-    default:
-      break;
   }
 };
 

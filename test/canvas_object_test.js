@@ -4,7 +4,6 @@
 test("canvas object - creation", function() {
   var object = new CanvasObject();
 
-  deepEqual(object.model, null);
   deepEqual(object.transformation, null);
   deepEqual(object.position.x, 0);
   deepEqual(object.position.y, 0);
@@ -28,7 +27,6 @@ test("canvas object - initialization", function() {
   var object = new CanvasObject();
   object.init(settings);
 
-  deepEqual(object.model, null);
   deepEqual(object.transformation, null);
   deepEqual(object.position.x, 10);
   deepEqual(object.position.y, 10);
@@ -61,7 +59,6 @@ test("canvas object - add object", function() {
 
   notEqual(object, null);
 
-  deepEqual(object.model, null);
   deepEqual(object.transformation, null);
   deepEqual(object.position.x, 10);
   deepEqual(object.position.y, 10);
@@ -111,7 +108,6 @@ test("canvas object - remove object", function() {
 
   notEqual(object, null);
 
-  deepEqual(object.model, null);
   deepEqual(object.transformation, null);
   deepEqual(object.position.x, 10);
   deepEqual(object.position.y, 10);
@@ -126,7 +122,6 @@ test("canvas object - remove object", function() {
 
   notEqual(object, null);
 
-  deepEqual(object.model, null);
   deepEqual(object.transformation, null);
   deepEqual(object.position.x, 20);
   deepEqual(object.position.y, 20);
@@ -252,7 +247,6 @@ test("canvas object - clear objects", function() {
 
   notEqual(object, null);
 
-  deepEqual(object.model, null);
   deepEqual(object.transformation, null);
   deepEqual(object.position.x, 10);
   deepEqual(object.position.y, 10);
