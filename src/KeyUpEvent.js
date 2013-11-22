@@ -1,7 +1,8 @@
 "use strict";
 
-function KeyDownEvent(settings) {
+function KeyUpEvent(settings) {
   this.init(settings);
+  this.type = 'KeyUpEvent';
 }
-KeyDownEvent.prototype = new CanvasEvent();
+KeyUpEvent.prototype = new CanvasEvent();
 

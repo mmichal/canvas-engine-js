@@ -33,11 +33,11 @@ CanvasObject.prototype.unsubscribe = function (eventType) {
 };
 
 CanvasObject.prototype.handleEvent = function (evt) {
-  if (evt.constructor in this.eventHandlers) {
-    this.eventHandlers[evt.constructor].call(this, evt);
+  if (evt.type in this.eventHandlers) {
+    this.eventHandlers[evt.type].call(this, evt);
   }
 
-  if (! evt instanceof TargetedEvent) {
+  if (! (evt instanceof TargetedEvent)) {
     this.objects.forEach(function (object) {
       object.handleEvent(evt);
     });
@@ -86,7 +86,7 @@ CanvasObject.prototype.draw = function (canvas) {
 
     this.render(canvas);
 
-    canvas.display(model.style);
+    canvas.display(this.style);
     canvas.context.restore();
 
     for (var objectsKey = 0; objectsKey < this.objects.length; objectsKey++) {
@@ -148,6 +148,7 @@ CanvasObject.prototype.clearTasks = function () {
 };
 
 CanvasObject.prototype.getObjectsAt = function (x, y) {
+
   var result = [];
   this.objects.forEach(function (object) {
     if (
@@ -160,13 +161,15 @@ CanvasObject.prototype.getObjectsAt = function (x, y) {
       y > object.position.y &&
       y <= object.size.height + object.position.y
     ) {
-      result.push[object];
-      result = result.concat.object.getObjectsAt(
+      result.push(object);
+
+      result = result.concat(object.getObjectsAt(
         x - object.position.x,
         y - object.position.y
-      );
+      ));
     }
   });
+
   return result;
 };
 

@@ -18,17 +18,45 @@ function InputListener(object) {
 
   var $this = this;
 
-  this.object.onkeyup = function(evt) {$this.onKeyUp(evt)};
-  this.object.onkeydown = function(evt) {$this.onKeyDown(evt)};
-  this.object.onkeydown = function(evt) {$this.onKeyDown(evt)};
-  this.object.onkeypress = function(evt) {$this.onKeyPress(evt)};
+  document.addEventListener(
+    'keyup',
+    function(evt) {$this.onKeyUp(evt)}
+  );
 
-  this.object.onmousedown = function(evt) {$this.onMouseDown(evt)};
-  this.object.onmouseup = function(evt) {$this.onMouseUp(evt)};
-  this.object.onmouseclick = function(evt) {$this.onMouseClick(evt)};
-  this.object.onmousedblclick = function(evt) {$this.onMouseDoubleClick(evt)};
-  this.object.onmousemove = function(evt) {$this.onMouseMove(evt)};
+  document.addEventListener(
+    'keydown',
+    function(evt) {$this.onKeyDown(evt)}
+  );
 
+  document.addEventListener(
+    'keypress',
+    function(evt) {$this.onKeyPress(evt)}
+  );
+
+  this.object.addEventListener(
+    'mousedown',
+    function(evt) {$this.onMouseDown(evt)}
+  );
+
+  this.object.addEventListener(
+    'mouseup',
+    function(evt) {$this.onMouseUp(evt)}
+  );
+
+  this.object.addEventListener(
+    'click',
+    function(evt) {$this.onMouseClick(evt)}
+  );
+
+  this.object.addEventListener(
+    'mousedblclick',
+    function(evt) {$this.onMouseDoubleClick(evt)}
+  );
+
+  this.object.addEventListener(
+    'mousemove',
+    function(evt) {$this.onMouseMove(evt)}
+  );
 
 }
 
@@ -40,7 +68,7 @@ InputListener.prototype.stopListening = function() {
   this.listening = false;
 };
 
-InputListener.processEvent = function (evt) {
+InputListener.prototype.processEvent = function (evt) {
   if (this.listening) {
     evt = (evt) ? evt : ((window.event) ? event : null);
     return evt;
@@ -50,7 +78,7 @@ InputListener.processEvent = function (evt) {
 };
 
 InputListener.prototype.onKeyUp = function (evt) {
-  evt = InputListener.processEvent(evt);
+  evt = this.processEvent(evt);
 
   if (evt) {
     this.keyUpSignal.emit(evt.keyCode);
@@ -58,7 +86,7 @@ InputListener.prototype.onKeyUp = function (evt) {
 };
 
 InputListener.prototype.onKeyDown = function(evt) {
-  evt = InputListener.processEvent(evt);
+  evt = this.processEvent(evt);
 
   if (evt) {
     this.keyDownSignal.emit(evt.keyCode);
@@ -66,7 +94,7 @@ InputListener.prototype.onKeyDown = function(evt) {
 };
 
 InputListener.prototype.onKeyPress = function(evt) {
-  evt = InputListener.processEvent(evt);
+  evt = this.processEvent(evt);
 
   if (evt) {
     this.keyPressSignal.emit(evt.keyCode);
@@ -74,7 +102,7 @@ InputListener.prototype.onKeyPress = function(evt) {
 };
 
 InputListener.prototype.onMouseDown = function(evt) {
-  evt = InputListener.processEvent(evt);
+  evt = this.processEvent(evt);
 
   if (evt) {
     this.mouseDownSignal.emit(evt.offsetX, evt.offsetY);
@@ -82,7 +110,7 @@ InputListener.prototype.onMouseDown = function(evt) {
 };
 
 InputListener.prototype.onMouseUp = function(evt) {
-  evt = InputListener.processEvent(evt);
+  evt = this.processEvent(evt);
 
   if (evt) {
     this.mouseUpSignal.emit(evt.offsetX, evt.offsetY);
@@ -90,7 +118,7 @@ InputListener.prototype.onMouseUp = function(evt) {
 };
 
 InputListener.prototype.onMouseClick = function(evt) {
-  evt = InputListener.processEvent(evt);
+  evt = this.processEvent(evt);
 
   if (evt) {
     this.mouseClickSignal.emit(evt.offsetX, evt.offsetY);
@@ -98,7 +126,7 @@ InputListener.prototype.onMouseClick = function(evt) {
 };
 
 InputListener.prototype.onMouseDoubleClick = function(evt) {
-  evt = InputListener.processEvent(evt);
+  evt = this.processEvent(evt);
 
   if (evt) {
     this.mouseDoubleClickSignal.emit(evt.offsetX, evt.offsetY);
@@ -106,7 +134,7 @@ InputListener.prototype.onMouseDoubleClick = function(evt) {
 };
 
 InputListener.prototype.onMouseMove = function(evt) {
-  evt = InputListener.processEvent(evt);
+  evt = this.processEvent(evt);
 
   if (evt) {
     this.mouseMoveSignal.emit(evt.offsetX, evt.offsetY);

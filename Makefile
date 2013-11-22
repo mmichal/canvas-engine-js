@@ -25,6 +25,5 @@ js: $(JSOBJECTS)
 
 clean:
 	rm ./*.min.js
-	rm ./*.min.css
  
 .PHONY: clean

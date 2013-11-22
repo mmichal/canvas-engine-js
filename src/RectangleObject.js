@@ -10,18 +10,18 @@ RectangleObject.prototype.render = function (canvas) {
   canvas.context.moveTo(0, 0);
 
   canvas.context.lineTo(
-    this.position.x + this.size.width,
-    this.position.y
+    this.size.width,
+    0
   );
 
   canvas.context.lineTo(
-    this.position.x + this.size.width,
-    this.position.y + this.size.height
+    this.size.width,
+    this.size.height
   );
 
   canvas.context.lineTo(
-    this.position.x,
-    this.position.y + this.size.height
+    0,
+    this.size.height
   );
 
   canvas.context.closePath();

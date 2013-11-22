@@ -18,59 +18,59 @@ function Canvas(canvas) {
   var $this = this;
 
   this.inputListener.keyDownSignal.connect(
-    this,
     function (keyCode) {
       $this.eventDispatcher.dispatch(new KeyDownEvent({ keyCode: keyCode }));
-    }
+    },
+    this
   );
 
   this.inputListener.keyUpSignal.connect(
-    this,
     function (keyCode) {
       $this.eventDispatcher.dispatch(new KeyUpEvent({ keyCode: keyCode }));
-    }
+    },
+    this
   );
 
   this.inputListener.keyPressSignal.connect(
-    this,
     function (keyCode) {
       $this.eventDispatcher.dispatch(new KeyPressEvent({ keyCode: keyCode }));
-    }
+    },
+    this
   );
 
   this.inputListener.mouseDownSignal.connect(
-    this,
     function (x, y) {
       $this.eventDispatcher.dispatch(new MouseDownEvent({ x: x, y: y }));
-    }
+    },
+    this
   );
 
   this.inputListener.mouseUpSignal.connect(
-    this,
     function (x, y) {
       $this.eventDispatcher.dispatch(new MouseUpEvent({ x: x, y: y }));
-    }
+    },
+    this
   );
 
   this.inputListener.mouseClickSignal.connect(
-    this,
     function (x, y) {
       $this.eventDispatcher.dispatch(new MouseClickEvent({ x: x, y: y }));
-    }
+    },
+    this
   );
 
   this.inputListener.mouseDoubleClickSignal.connect(
-    this,
     function (x, y) {
       $this.eventDispatcher.dispatch(new MouseDoubleClickEvent({ x: x, y: y }));
-    }
+    },
+    this
   );
 
   this.inputListener.mouseMoveSignal.connect(
-    this,
     function (x, y) {
       $this.eventDispatcher.dispatch(new MouseMoveEvent({ x: x, y: y }));
-    }
+    },
+    this
   );
 }
 
@@ -80,12 +80,14 @@ Canvas.prototype.start = function () {
   if (this.timer) {
     this.timer.start();
   }
+  this.inputListener.startListening();
 };
 
 Canvas.prototype.stop = function () {
   if (this.timer) {
     this.timer.stop();
   }
+  this.inputListener.stopListening();
 };
 
 Canvas.prototype.draw = function () {
