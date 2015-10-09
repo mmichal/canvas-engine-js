@@ -324,6 +324,6 @@ Canvas.prototype.transform = function (transformation) {
 
 Canvas.prototype.setTimer = function (interval) {
   var $this = this;
-  this.timer = new Timer(interval, function () { $this.step($this) });
+  this.timer = new Timer(interval, function (interval) { $this.step($this, interval) });
 };
 

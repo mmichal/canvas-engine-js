@@ -25,7 +25,7 @@ function TestController(canvas, interval) {
       rotation: 0
     }
     },
-    100,
+    2000,
     new Bezier(0,0,0.5,0.1,0.7,0.9,1,1),
     function () {
       console.log('finish');

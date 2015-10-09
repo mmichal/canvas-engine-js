@@ -21,7 +21,7 @@ Timer.prototype.step = function() {
     if (this.running) {
       var $this = this;
       setTimeout( function() {
-        $this.callback();
+        $this.callback($this.interval);
         $this.step();
       },
       this.interval);

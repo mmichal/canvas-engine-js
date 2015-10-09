@@ -3,8 +3,8 @@
 
 function TransitionTask(settings) {
   this.timingFunction = null;
-  this.step = 0;
-  this.steps = 0;
+  this.time = 0;
+  this.duration = 0;
   this.object = null;
   this.endObject = null;
   this.callback = null;
@@ -14,22 +14,23 @@ function TransitionTask(settings) {
   this.progress = 0;
   this.startValues = {};
 
-  if (this.steps > 0) {
+/*  if (this.duration > 0) {
     this.interval = 1.0 / this.steps;
-  }
+  }*/
 
-  this.action = function (executor, canvas) {
-    if (this.step !== this.steps) {
+  this.action = function (executor, canvas, interval) {
+    if (this.time < this.duration) {
 
       if (this.timingFunction === null) {
         var $this = this;
-        this.timingFunction = function (step) {
-          return step;
+        this.timingFunction = function (time) {
+          return time;
         };
       }
 
-      this.step++;
-      var mul = this.timingFunction(this.step / this.steps);
+      this.time += interval;
+
+      var mul = this.timingFunction(this.time / this.duration);
 
       for (var property in this.endObject) {
         if (

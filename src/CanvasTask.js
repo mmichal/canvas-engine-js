@@ -10,9 +10,9 @@ CanvasTask.prototype.init = function (settings) {
   utils.extend(this, settings);
 };
 
-CanvasTask.prototype.execute = function (executor, canvas) {
+CanvasTask.prototype.execute = function (executor, canvas, interval) {
   if (this.action) {
-    this.action.call(this, executor, canvas);
+    this.action.call(this, executor, canvas, interval);
   }
 };
 
