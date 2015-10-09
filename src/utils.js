@@ -54,6 +54,21 @@ var utils = {
     self.ajax.open("GET", url, true);
     self.ajax.send();
 
+  },
+  getElementPosition: function(element) {
+    var x = 0,
+    y = 0;
+
+    do {
+      x += element.offsetLeft;
+      y += element.offsetTop;
+    } while (element = element.offsetParent);
+
+    return {
+      x: x,
+      y: y
+    };
   }
 
 };
+

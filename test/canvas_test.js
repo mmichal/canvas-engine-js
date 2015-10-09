@@ -9,7 +9,8 @@ function createMockCanvas() {
       } else {
         return false;
       }
-    }
+    },
+    addEventListener: function (type, fun) {}
   };
 }
 

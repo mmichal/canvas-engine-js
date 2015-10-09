@@ -264,7 +264,7 @@ test("canvas object - clear objects", function() {
 test("canvas object - step", function () {
   var result = null;
   var settings = {
-    action: function (canvas, $this) { if ($this.test === 123) result = canvas; },
+    action: function ($this, canvas) { if (this.test === 123) result = canvas; },
     test: 123
   };
 

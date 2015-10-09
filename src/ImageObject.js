@@ -1,3 +1,4 @@
+
 "use strict";
 
 function ImageObject(settings) {
@@ -6,8 +7,9 @@ function ImageObject(settings) {
   this.image = null;
   this.init(settings);
   this.reload();
-
+  this.loadedSignal = new Signal();
 }
+
 ImageObject.prototype = new CanvasObject();
 
 ImageObject.prototype.reload = function () {
@@ -20,7 +22,9 @@ ImageObject.prototype.reload = function () {
     var $this = this;
     this.image.addEventListener('load', function (evt) {
       $this.loaded = true;
+      $this.loadedSignal.emit($this);
     });
+
     this.image.src = this.uri;
   }
 }

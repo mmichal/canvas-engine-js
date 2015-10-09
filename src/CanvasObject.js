@@ -44,11 +44,6 @@ CanvasObject.prototype.handleEvent = function (evt) {
   }
 };
 
-CanvasObject.prototype.init = function (settings) {
-  utils.extend(this, settings);
-};
-
-
 CanvasObject.prototype.zSort = function () {
   this.objects.sort(function (object1, object2) {
     if (
@@ -72,7 +67,7 @@ CanvasObject.prototype.step = function (canvas) {
   }
 
   for (var taskIndex = 0; taskIndex < this.tasks.length; taskIndex++) {
-    this.tasks[taskIndex].execute(canvas);
+    this.tasks[taskIndex].execute(this, canvas);
   }
 };
 
@@ -171,5 +166,56 @@ CanvasObject.prototype.getObjectsAt = function (x, y) {
   });
 
   return result;
+};
+
+CanvasObject.prototype.animate = function (targetProperties, steps, timing, callback) {
+  var timingFunction;
+
+  var callBackAdded = false;
+
+  if (!callback) {
+    callback = null;
+  }
+
+  var addTask =  function (object, endObject) {
+    if (! callBackAdded) {
+      var callback = callback;
+      callBackAdded = true;
+    } else {
+      var callback = null;
+    }
+
+    this.addTask(new TransitionTask({
+      object: object,
+      endObject: endObject,
+      callback: callback,
+      timingFunction: timingFunction,
+      steps: steps
+    }));
+
+    for (var property in endObject) {
+      if (
+        endObject[property].constructor === Object &&
+        object[property].constructor === Object
+      ) {
+        addTask.call(this, object[property], endObject[property]);
+      }
+    }
+  };
+
+  if (timing !== null) {
+    if (timing instanceof Bezier) {
+      timingFunction = function (step) {
+        return timing.getY(step);
+      };
+
+    } else {
+      timingFunction = timing;
+    }
+  } else {
+    timingFunction = null;
+  }
+
+  addTask.call(this, this, targetProperties);
 };
 

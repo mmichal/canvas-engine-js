@@ -23,6 +23,8 @@ Signal.prototype.disconnect = function(slot, object) {
       } else {
         this.slots.splice(key, 1);
       }
+    } else if (slot && this.slots[key].slot === slot) {
+      this.slots.splice(key, 1);
     }
   }
 

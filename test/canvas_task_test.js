@@ -17,7 +17,7 @@ test("canvas task - creation", function() {
 test("canvas task - executing action", function() {
   var result = null;
   var settings = {
-    action: function (canvas, $this) { if ($this.test === 123) result = canvas; },
+    action: function ($this, canvas) { if (this.test === 123) result = canvas; },
     test: 123
   };
 
@@ -25,7 +25,7 @@ test("canvas task - executing action", function() {
 
   deepEqual(task.test, 123);
 
-  task.execute("test2")
+  task.execute(null, "test2")
   deepEqual(result, "test2");
 
 });

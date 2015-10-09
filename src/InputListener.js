@@ -14,6 +14,12 @@ function InputListener(object) {
   this.mouseDoubleClickSignal = new Signal();
   this.mouseMoveSignal = new Signal();
 
+  this.touchStartSignal = new Signal();
+  this.touchEndSignal = new Signal();
+  this.touchCancelSignal = new Signal();
+  this.touchLeaveSignal = new Signal();
+  this.touchMoveSignal = new Signal();
+
   this.listening = false;
 
   var $this = this;
@@ -56,6 +62,31 @@ function InputListener(object) {
   this.object.addEventListener(
     'mousemove',
     function(evt) {$this.onMouseMove(evt)}
+  );
+
+  this.object.addEventListener(
+    'touchstart',
+    function(evt) {$this.onTouchStart(evt)}
+  );
+
+  this.object.addEventListener(
+    'touchend',
+    function(evt) {$this.onTouchEnd(evt)}
+  );
+
+  this.object.addEventListener(
+    'touchcancel',
+    function(evt) {$this.onTouchCancel(evt)}
+  );
+
+  this.object.addEventListener(
+    'touchleave',
+    function(evt) {$this.onTouchLeave(evt)}
+  );
+
+  this.object.addEventListener(
+    'touchmove',
+    function(evt) {$this.onTouchMove(evt)}
   );
 
 }
@@ -138,6 +169,86 @@ InputListener.prototype.onMouseMove = function(evt) {
 
   if (evt) {
     this.mouseMoveSignal.emit(evt.offsetX, evt.offsetY);
+  }
+};
+
+InputListener.prototype.onTouchStart = function(evt) {
+  evt = this.processEvent(evt);
+
+  if (evt) {
+    this.touchStartSignal.emit(
+      evt.changedTouches,
+      evt.targetTouches,
+      evt.touches,
+      evt.altKey,
+      evt.ctrlKey,
+      evt.metaKey,
+      evt.shiftKey
+    );
+  }
+};
+
+InputListener.prototype.onTouchEnd = function(evt) {
+  evt = this.processEvent(evt);
+
+  if (evt) {
+    this.touchEndSignal.emit(
+      evt.changedTouches,
+      evt.targetTouches,
+      evt.touches,
+      evt.altKey,
+      evt.ctrlKey,
+      evt.metaKey,
+      evt.shiftKey
+    );
+  }
+};
+
+InputListener.prototype.onTouchCancel = function(evt) {
+  evt = this.processEvent(evt);
+
+  if (evt) {
+    this.touchCancelSignal.emit(
+      evt.changedTouches,
+      evt.targetTouches,
+      evt.touches,
+      evt.altKey,
+      evt.ctrlKey,
+      evt.metaKey,
+      evt.shiftKey
+    );
+  }
+};
+
+InputListener.prototype.onTouchLeave = function(evt) {
+  evt = this.processEvent(evt);
+
+  if (evt) {
+    this.touchLeaveSignal.emit(
+      evt.changedTouches,
+      evt.targetTouches,
+      evt.touches,
+      evt.altKey,
+      evt.ctrlKey,
+      evt.metaKey,
+      evt.shiftKey
+    );
+  }
+};
+
+InputListener.prototype.onTouchMove = function(evt) {
+  evt = this.processEvent(evt);
+
+  if (evt) {
+    this.touchMoveSignal.emit(
+      evt.changedTouches,
+      evt.targetTouches,
+      evt.touches,
+      evt.altKey,
+      evt.ctrlKey,
+      evt.metaKey,
+      evt.shiftKey
+    );
   }
 };
 

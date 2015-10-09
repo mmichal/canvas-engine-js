@@ -6,6 +6,9 @@ function Canvas(canvas) {
   this.context = canvas.getContext('2d');
   this.timer = null;
 
+  this.globalX = 0;
+  this.globalY = 0;
+
   this.tasks = [
     new CanvasTask({ action: function (canvas) { canvas.draw(); } })
   ];
@@ -72,9 +75,152 @@ function Canvas(canvas) {
     },
     this
   );
+
+  this.inputListener.touchStartSignal.connect(
+    function (
+      changedTouches,
+      targetTouches,
+      touches,
+      altKey,
+      ctrlKey,
+      metaKey,
+      shiftKey
+    ) {
+      $this.eventDispatcher.dispatch(
+        new TouchStartEvent(
+          {
+            changedTouches: changedTouches,
+            targetTouches: targetTouches,
+            touches: touches,
+            altKey: altKey,
+            ctrlKey: ctrlKey,
+            metaKey: metaKey,
+            shiftKey: shiftKey
+          }
+        )
+      );
+    },
+    this
+  );
+
+  this.inputListener.touchEndSignal.connect(
+    function (
+      changedTouches,
+      targetTouches,
+      touches,
+      altKey,
+      ctrlKey,
+      metaKey,
+      shiftKey
+    ) {
+      $this.eventDispatcher.dispatch(
+        new TouchEndEvent(
+          {
+            changedTouches: changedTouches,
+            targetTouches: targetTouches,
+            touches: touches,
+            altKey: altKey,
+            ctrlKey: ctrlKey,
+            metaKey: metaKey,
+            shiftKey: shiftKey
+          }
+        )
+      );
+    },
+    this
+  );
+
+  this.inputListener.touchCancelSignal.connect(
+    function (
+      changedTouches,
+      targetTouches,
+      touches,
+      altKey,
+      ctrlKey,
+      metaKey,
+      shiftKey
+    ) {
+      $this.eventDispatcher.dispatch(
+        new TouchCancelEvent(
+          {
+            changedTouches: changedTouches,
+            targetTouches: targetTouches,
+            touches: touches,
+            altKey: altKey,
+            ctrlKey: ctrlKey,
+            metaKey: metaKey,
+            shiftKey: shiftKey
+          }
+        )
+      );
+    },
+    this
+  );
+
+  this.inputListener.touchLeaveSignal.connect(
+    function (
+      changedTouches,
+      targetTouches,
+      touches,
+      altKey,
+      ctrlKey,
+      metaKey,
+      shiftKey
+    ) {
+      $this.eventDispatcher.dispatch(
+        new TouchLeaveEvent(
+          {
+            changedTouches: changedTouches,
+            targetTouches: targetTouches,
+            touches: touches,
+            altKey: altKey,
+            ctrlKey: ctrlKey,
+            metaKey: metaKey,
+            shiftKey: shiftKey
+          }
+        )
+      );
+    },
+    this
+  );
+
+  this.inputListener.touchMoveSignal.connect(
+    function (
+      changedTouches,
+      targetTouches,
+      touches,
+      altKey,
+      ctrlKey,
+      metaKey,
+      shiftKey
+    ) {
+      $this.eventDispatcher.dispatch(
+        new TouchMoveEvent(
+          {
+            changedTouches: changedTouches,
+            targetTouches: targetTouches,
+            touches: touches,
+            altKey: altKey,
+            ctrlKey: ctrlKey,
+            metaKey: metaKey,
+            shiftKey: shiftKey
+          }
+        )
+      );
+    },
+    this
+  );
+
+  this.updatePosition();
 }
 
 Canvas.prototype = new CanvasObject();
+
+Canvas.prototype.updatePosition = function () {
+  var position = utils.getElementPosition(this.canvas);
+  this.globalX = position.x;
+  this.globalY = position.y;
+}
 
 Canvas.prototype.start = function () {
   if (this.timer) {
@@ -95,8 +241,6 @@ Canvas.prototype.draw = function () {
 
   for (var objectsKey = 0; objectsKey < this.objects.length; objectsKey++) {
     this.context.save();
-    this.position(this.objects[objectsKey].position);
-    this.transform(this.objects[objectsKey].transformation);
     this.objects[objectsKey].draw(this);
     this.context.restore();
   }
@@ -107,18 +251,18 @@ Canvas.prototype.setStyle = function (style) {
     if (style.stroke) {
       this.context.lineWidth = style.stroke.width;
       this.context.strokeStyle =
-        'rgba(' + style.stroke.red
-        + ', ' + style.stroke.green
-        + ', ' + style.stroke.blue
-        + ', ' + style.stroke.opacity + ')';
+        'rgba(' + Math.round(style.stroke.red)
+        + ', ' + Math.round(style.stroke.green)
+        + ', ' + Math.round(style.stroke.blue)
+        + ', ' + Math.round(style.stroke.opacity) + ')';
     }
 
     if (style.fill) {
       this.context.fillStyle =
-        'rgba(' + style.fill.red
-        + ', ' + style.fill.green
-        + ', ' + style.fill.blue
-        + ', ' + style.fill.opacity + ')';
+        'rgba(' + Math.round(style.fill.red)
+        + ', ' + Math.round(style.fill.green)
+        + ', ' + Math.round(style.fill.blue)
+        + ', ' + Math.round(style.fill.opacity) + ')';
     }
 
     if (style.font) {
