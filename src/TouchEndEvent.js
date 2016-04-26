@@ -5,5 +5,5 @@ function TouchEndEvent(settings) {
   this.init(settings);
   this.type = 'TouchEndEvent';
 }
-TouchEndEvent.prototype = new TouchEvent();
+TouchEndEvent.prototype = Object.create(TouchEvent.prototype);
 

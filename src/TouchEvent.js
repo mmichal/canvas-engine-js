@@ -15,7 +15,7 @@ function TouchEvent(settings) {
   this.dispatcher = null;
   this.type = 'TouchEvent';
 }
-TouchEvent.prototype = new TargetedEvent();
+TouchEvent.prototype = Object.create(TargetedEvent.prototype);
 
 
 TouchEvent.prototype.getRelativePosition = function(jsTouchEvent) {

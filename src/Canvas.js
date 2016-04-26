@@ -1,13 +1,21 @@
 
 "use strict";
 
-function Canvas(canvas) {
+function Canvas(canvas, scale) {
+  this.eventHandlers = {};
   this.canvas = canvas;
   this.context = canvas.getContext('2d');
   this.timer = null;
+  this.ratio = 1
 
   this.globalX = 0;
   this.globalY = 0;
+
+  if (scale === undefined) {
+    this.scale(null);
+  } else {
+    this.scale(scale);
+  }
 
   this.tasks = [
     new CanvasTask({ action: function (canvas) { canvas.draw(); } })
@@ -214,7 +222,29 @@ function Canvas(canvas) {
   this.updatePosition();
 }
 
-Canvas.prototype = new CanvasObject();
+Canvas.prototype = Object.create(CanvasObject.prototype);
+
+Canvas.prototype.scale = function(scale) {
+  if (scale === null) {
+    var deviceRatio = window.devicePixelRatio || 1;
+    var backingStoreRatio = this.context.backingStorePixelRatio ||
+      this.context.webkitBackingStorePixelRatio ||
+      this.context.mozBackingStorePixelRatio ||
+      this.context.msBackingStorePixelRatio ||
+      this.context.oBackingStorePixelRatio ||
+      1;
+
+    this.ratio = deviceRatio / backingStoreRatio;
+
+  } else {
+    this.ratio = scale;
+  }
+
+  this.canvas.width = this.ratio * this.canvas.width;
+  this.canvas.height = this.ratio * this.canvas.height;
+
+  this.context.scale(this.ratio, this.ratio);
+};
 
 Canvas.prototype.updatePosition = function () {
   var position = utils.getElementPosition(this.canvas);
@@ -254,7 +284,14 @@ Canvas.prototype.setStyle = function (style) {
         'rgba(' + Math.round(style.stroke.red)
         + ', ' + Math.round(style.stroke.green)
         + ', ' + Math.round(style.stroke.blue)
-        + ', ' + Math.round(style.stroke.opacity) + ')';
+        + ', ' + style.stroke.opacity + ')';
+    } else if (style.strokeText) {
+      this.context.lineWidth = style.strokeText.width;
+      this.context.strokeStyle =
+        'rgba(' + Math.round(style.strokeText.red)
+        + ', ' + Math.round(style.strokeText.green)
+        + ', ' + Math.round(style.strokeText.blue)
+        + ', ' + style.strokeText.opacity + ')';
     }
 
     if (style.fill) {
@@ -262,7 +299,13 @@ Canvas.prototype.setStyle = function (style) {
         'rgba(' + Math.round(style.fill.red)
         + ', ' + Math.round(style.fill.green)
         + ', ' + Math.round(style.fill.blue)
-        + ', ' + Math.round(style.fill.opacity) + ')';
+        + ', ' + style.fill.opacity + ')';
+    } else if (style.fillText) {
+       this.context.fillStyle =
+        'rgba(' + Math.round(style.fillText.red)
+        + ', ' + Math.round(style.fillText.green)
+        + ', ' + Math.round(style.fillText.blue)
+        + ', ' + style.fillText.opacity + ')';
     }
 
     if (style.font) {

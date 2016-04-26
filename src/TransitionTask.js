@@ -65,5 +65,5 @@ function TransitionTask(settings) {
     }
   };
 }
-TransitionTask.prototype = new CanvasTask();
+TransitionTask.prototype = Object.create(CanvasTask.prototype);
 

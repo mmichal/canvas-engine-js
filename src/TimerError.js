@@ -10,5 +10,5 @@
 function TimerError(message) {
   this.message = message;
 }
-TimerError.prototype = new Error()
+TimerError.prototype = Object.create(Error.prototype)
 

@@ -5,5 +5,5 @@ function TouchLeaveEvent(settings) {
   this.init(settings);
   this.type = 'TouchLeaveEvent';
 }
-TouchLeaveEvent.prototype = new TouchEvent();
+TouchLeaveEvent.prototype = Object.create(TouchEvent.prototype);
 

@@ -2,9 +2,10 @@
 "use strict";
 
 function RectangleObject(settings) {
+  CanvasObject.call(this, settings);
   this.init(settings);
 }
-RectangleObject.prototype = new CanvasObject();
+RectangleObject.prototype = Object.create(CanvasObject.prototype);
 
 RectangleObject.prototype.render = function (canvas) {
   canvas.context.beginPath();

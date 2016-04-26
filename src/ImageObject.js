@@ -2,6 +2,8 @@
 "use strict";
 
 function ImageObject(settings) {
+  CanvasObject.call(this, settings);
+
   this.uri = null;
   this.loaded = false;
   this.image = null;
@@ -10,7 +12,7 @@ function ImageObject(settings) {
   this.loadedSignal = new Signal();
 }
 
-ImageObject.prototype = new CanvasObject();
+ImageObject.prototype = Object.create(CanvasObject.prototype);
 
 ImageObject.prototype.reload = function () {
   this.loaded = false;

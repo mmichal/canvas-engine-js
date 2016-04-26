@@ -47,10 +47,10 @@ CanvasObject.prototype.handleEvent = function (evt) {
 CanvasObject.prototype.zSort = function () {
   this.objects.sort(function (object1, object2) {
     if (
-      size in object1 &&
-      size in object2 &&
-      z in object1.size &&
-      z in object2.size
+      'size' in object1 &&
+      'size' in object2 &&
+      'z' in object1.size &&
+      'z' in object2.size
     ) {
       return object1.size.z - object2.size.z;
     } else {
@@ -173,22 +173,22 @@ CanvasObject.prototype.animate = function (targetProperties, duration, timing, c
 
   var callBackAdded = false;
 
-  if (!callback) {
+  if (callback === undefined) {
     callback = null;
   }
 
   var addTask =  function (object, endObject) {
     if (! callBackAdded) {
-      var callback = callback;
+      var callbackFun = callback;
       callBackAdded = true;
     } else {
-      var callback = null;
+      var callbackFun = null;
     }
 
     this.addTask(new TransitionTask({
       object: object,
       endObject: endObject,
-      callback: callback,
+      callback: callbackFun,
       timingFunction: timingFunction,
       duration: duration
     }));

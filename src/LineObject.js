@@ -10,7 +10,7 @@ function LineObject(settings) {
   this.init(settings);
 
 }
-LineObject.prototype = new CanvasObject();
+LineObject.prototype = Object.create(CanvasObject.prototype);
 
 LineObject.prototype.render = function (canvas) {
   canvas.context.beginPath();

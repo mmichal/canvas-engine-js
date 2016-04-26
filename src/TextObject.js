@@ -2,29 +2,35 @@
 "use strict";
 
 function TextObject(settings) {
+  CanvasObject.call(this, settings);
   this.text = '';
   this.init(settings);
 
 }
-TextObject.prototype = new CanvasObject();
+TextObject.prototype = Object.create(CanvasObject.prototype);
 
 TextObject.prototype.render = function (canvas) {
   canvas.context.textBaseline = 'bottom left';
 
-  if (this.style.fill) {
+  if (this.style.font) {
+    canvas.context.font = this.style.font;
+  }
+
+  if (this.style.fillText) {
     canvas.context.fillText(
       this.text,
-      this.position.x,
-      this.position.y
+      0,
+      0
     );
   }
 
-  if (this.style.stroke) {
+  if (this.style.strokeText) {
     canvas.context.strokeText(
       this.text,
-      this.position.x,
-      this.position.y
+      0,
+      0
     );
   }
+
 };
 

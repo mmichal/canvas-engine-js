@@ -5,5 +5,5 @@ function TouchMoveEvent(settings) {
   this.init(settings);
   this.type = 'TouchMoveEvent';
 }
-TouchMoveEvent.prototype = new TouchEvent();
+TouchMoveEvent.prototype = Object.create(TouchEvent.prototype);
 

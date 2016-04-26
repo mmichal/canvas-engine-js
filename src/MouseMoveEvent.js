@@ -5,5 +5,5 @@ function MouseMoveEvent(settings) {
   this.init(settings);
   this.type = 'MouseMoveEvent';
 }
-MouseMoveEvent.prototype = new PointedEvent();
+MouseMoveEvent.prototype = Object.create(PointedEvent.prototype);
 

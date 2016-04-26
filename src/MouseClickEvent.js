@@ -5,5 +5,5 @@ function MouseClickEvent(settings) {
   this.init(settings);
   this.type = 'MouseClickEvent';
 }
-MouseClickEvent.prototype = new PointedEvent();
+MouseClickEvent.prototype = Object.create(PointedEvent.prototype);
 

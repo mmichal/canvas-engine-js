@@ -5,5 +5,5 @@ function TouchCancelEvent(settings) {
   this.init(settings);
   this.type = 'TouchCancelEvent';
 }
-TouchCancelEvent.prototype = new TouchEvent();
+TouchCancelEvent.prototype = Object.create(TouchEvent.prototype);
 
